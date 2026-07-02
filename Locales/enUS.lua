@@ -156,6 +156,8 @@ L["Settings Click"] = "Click";
 L["Settings Random Section Title"] = "Random Mount Selection";
 L["Settings Random Ground Allow Flying"] = "Allow 'flying' ground mounts";
 L["Settings Random Ground Allow Flying Tooltip"] = "Turn this feature off to restrict random ground mounts to use non-flying mounts only.";
+L["Settings Random Include Vendor Passenger Mounts"] = "Include vendor passenger mounts";
+L["Settings Random Include Vendor Passenger Mounts Tooltip"] = "When summoning a random passenger mount, include mounts with a vendor NPC riding in the passenger seat, like the Grand Expedition Yak or Traveler's Tundra Mammoth.";
 L["Settings Clone Targeted Mount"] = "Clone targeted mount";
 L["Settings Clone Targeted Mount Tooltip"] = "When summoning a random mount, target a mounted player to summon the same mount, if you own it.";
 

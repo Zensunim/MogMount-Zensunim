@@ -89,6 +89,19 @@ local passengerGroundMountIDs = {
 	[289]  = true, -- Grand Ice Mammoth
 	[460]  = true, -- Grand Expedition Yak
 	[1039] = true, -- Mighty Caravan Brutosaur
+	[2237] = true, -- Grizzly Hills Packmaster ("Storebought LongBoi")
+};
+
+-- Passenger-capable ground mounts that also carry a vendor NPC in a passenger seat
+-- ("LongBoi", "Storebought LongBoi", Yak, WOTLK Mammoth). Excluded from random
+-- passenger selection by default so a vendor doesn't unexpectedly ride along;
+-- players can opt in via MogCompanionsSaved.RandomIncludeVendorPassengerMounts.
+local vendorPassengerMountIDs = {
+	[280]  = true, -- Traveler's Tundra Mammoth
+	[284]  = true, -- Traveler's Tundra Mammoth
+	[460]  = true, -- Grand Expedition Yak
+	[1039] = true, -- Mighty Caravan Brutosaur
+	[2237] = true, -- Grizzly Hills Packmaster
 };
 
 local function IsAquaticMountType(mountTypeID)
@@ -113,6 +126,10 @@ end
 
 local function IsPassengerMount(mountID)
 	return IsPassengerFlyingMount(mountID) or IsPassengerGroundMount(mountID);
+end
+
+local function IsVendorPassengerMount(mountID)
+	return mountID ~= nil and vendorPassengerMountIDs[mountID] == true;
 end
 
 local function addUniquePoolValue(pool, value)
@@ -652,21 +669,27 @@ end
 -- nil = all passenger mounts. Uses the mountID field stored in sortMounts() to match against
 -- the hardcoded passenger mount ID tables. No search filter is applied so the pool is always
 -- the full category regardless of any open UI search.
+-- Vendor passenger mounts are excluded unless MogCompanionsSaved.RandomIncludeVendorPassengerMounts 
+-- is true, since a vendor NPC riding along is usually not what the player wants from a surprise random summon.
 function MogCompanions:getSortedPassengerMounts(category)
 	local mountsRaw = MogCompanions:sortMounts(MogCompanions:GetCollectedMounts());
 	local mounts = {};
+	local includeVendorMounts = MogCompanionsSaved.RandomIncludeVendorPassengerMounts;
 
 	for i = 1, #mountsRaw do
 		local mount = mountsRaw[i];
 		local isFlying = IsPassengerFlyingMount(mount.id);
 		local isGround = IsPassengerGroundMount(mount.id);
+		local isAllowed = includeVendorMounts or not IsVendorPassengerMount(mount.id);
 
-		if category == "flying" then
-			if isFlying then table.insert(mounts, mount); end
-		elseif category == "ground" then
-			if isGround then table.insert(mounts, mount); end
-		else
-			if isFlying or isGround then table.insert(mounts, mount); end
+		if isAllowed then
+			if category == "flying" then
+				if isFlying then table.insert(mounts, mount); end
+			elseif category == "ground" then
+				if isGround then table.insert(mounts, mount); end
+			else
+				if isFlying or isGround then table.insert(mounts, mount); end
+			end
 		end
 	end
 

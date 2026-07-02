@@ -300,6 +300,19 @@ local function InitSettings()
 	Settings.CreateCheckbox(category, setting, tooltip);
 	setting:SetValueChangedCallback(OnSettingChanged);
 
+	-- Random passenger: include vendor passenger mounts
+
+	local variable = CreateSettingIdentifier("RandomIncludeVendorPassengerMounts");
+	local defaultValue = false;
+	local name = L["Settings Random Include Vendor Passenger Mounts"];
+	local tooltip = L["Settings Random Include Vendor Passenger Mounts Tooltip"];
+	local variableKey = "RandomIncludeVendorPassengerMounts";
+	local variableTable = MogCompanionsSaved;
+
+	local setting = Settings.RegisterAddOnSetting(category, variable, variableKey, variableTable, type(defaultValue), name, defaultValue);
+	Settings.CreateCheckbox(category, setting, tooltip);
+	setting:SetValueChangedCallback(OnSettingChanged);
+
 	-- Clone targeted mount
 
 	local variable = CreateSettingIdentifier("CloneTargetedMount");

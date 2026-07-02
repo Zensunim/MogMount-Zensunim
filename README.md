@@ -85,3 +85,7 @@ Simplified Chinese localization contributed by XingDVD.
 ### 1.5.3
 * Updated for WoW 12.0.7
 * Added Mycomancer's Hearthspore to the hearthstone toy list
+
+### 1.6
+* Added an "Include vendor passenger mounts" option under Random Mount Selection (off by default).
+* When disabled, the random Passenger Mount modifier excludes vendor-carrying mounts (Grand Expedition Yak, Traveler's Tundra Mammoth, Mighty Caravan Brutosaur, Grizzly Hills Packmaster).
