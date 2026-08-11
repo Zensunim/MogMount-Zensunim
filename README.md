@@ -88,4 +88,7 @@ Simplified Chinese localization contributed by XingDVD.
 
 ### 1.6
 * Added an "Include vendor passenger mounts" option under Random Mount Selection (off by default).
-* When disabled, the random Passenger Mount modifier excludes vendor-carrying mounts (Grand Expedition Yak, Traveler's Tundra Mammoth, Mighty Caravan Brutosaur, Grizzly Hills Packmaster).
+* When disabled, the random Passenger Mount modifier excludes vendor-carrying mounts.
+
+### 1.6.1
+* Updated for WoW 12.1
