@@ -100,8 +100,8 @@ L["Settings Default Section Title"] = "Default";
 
 -- Rows
 L["Settings Aquatic Mount"] = "Aquatic Mount";
-L["Settings Aquatic Mount Tooltip"] = "Choose which aquatic mount to use when you hold Control while swimming. When set to Random, a random aquatic mount from your collection is used each time.";
-L["Settings Aquatic Mount Keybind Reminder"] = "Hold [KEY] to summon this mount while swimming. (Uses the \"Force Ground\" modifier key.)";
+L["Settings Aquatic Mount Tooltip"] = "Choose the aquatic mount to use while swimming.";
+L["Settings Aquatic Mount Keybind Reminder"] = "Hold [KEY] to summon this mount while swimming.";
 
 L["Settings Repair Mount"] = "Repair Mount";
 L["Settings Repair Mount Tooltip"] = "Choose which vendor or repair mount to use when you hold Shift. When set to Random, a random vendor mount from your collection is used each time.";
@@ -156,6 +156,8 @@ L["Settings Click"] = "Click";
 L["Settings Random Section Title"] = "Random Mount Selection";
 L["Settings Random Ground Allow Flying"] = "Allow 'flying' ground mounts";
 L["Settings Random Ground Allow Flying Tooltip"] = "Turn this feature off to restrict random ground mounts to use non-flying mounts only.";
+L["Settings Summon Aquatic While Swimming"] = "Summon Aquatic while swimming";
+L["Settings Summon Aquatic While Swimming Tooltip"] = "When enabled, swimming/submerged summons aquatic by default. Hold [KEY] to override and try a flying mount instead.";
 L["Settings Random Include Vendor Passenger Mounts"] = "Include vendor passenger mounts";
 L["Settings Random Include Vendor Passenger Mounts Tooltip"] = "When summoning a random passenger mount, include mounts with a vendor NPC riding in the passenger seat, like the Grand Expedition Yak or Traveler's Tundra Mammoth.";
 L["Settings Clone Targeted Mount"] = "Clone targeted mount";

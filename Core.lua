@@ -804,6 +804,10 @@ function MogCompanions:OnEvent(event, addOnName)
 				MogCompanionsSaved.RandomGroundAllowFlying = true;
 			end
 
+			if MogCompanionsSaved.SummonAquaticWhileSwimming == nil then
+				MogCompanionsSaved.SummonAquaticWhileSwimming = true;
+			end
+
 			if MogCompanionsSaved.CloneTargetedMount == nil then
 				MogCompanionsSaved.CloneTargetedMount = false;
 			end

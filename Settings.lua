@@ -300,6 +300,18 @@ local function InitSettings()
 	Settings.CreateCheckbox(category, setting, tooltip);
 	setting:SetValueChangedCallback(OnSettingChanged);
 
+	-- Toggle aquatic auto-summon while swimming/submerged.
+	local variable = CreateSettingIdentifier("SummonAquaticWhileSwimming");
+	local defaultValue = true;
+	local name = L["Settings Summon Aquatic While Swimming"];
+	local tooltip = L["Settings Summon Aquatic While Swimming Tooltip"];
+	local variableKey = "SummonAquaticWhileSwimming";
+	local variableTable = MogCompanionsSaved;
+
+	local setting = Settings.RegisterAddOnSetting(category, variable, variableKey, variableTable, type(defaultValue), name, defaultValue);
+	Settings.CreateCheckbox(category, setting, tooltip);
+	setting:SetValueChangedCallback(OnSettingChanged);
+
 	-- Random passenger: include vendor passenger mounts
 
 	local variable = CreateSettingIdentifier("RandomIncludeVendorPassengerMounts");

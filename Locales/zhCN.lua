@@ -100,8 +100,8 @@ L["Settings Default Section Title"] = "默认";
 
 -- Rows
 L["Settings Aquatic Mount"] = "水栖坐骑";
-L["Settings Aquatic Mount Tooltip"] = "选择在游泳时按住 Ctrl 键要使用的水栖坐骑。当设置为随机时，每次都会从你的收藏中随机使用一个水栖坐骑。";
-L["Settings Aquatic Mount Keybind Reminder"] = "游泳时按住 [KEY] 来召唤此坐骑。（使用“强制地面”修饰键。）";
+L["Settings Aquatic Mount Tooltip"] = "选择游泳时使用的水栖坐骑。";
+L["Settings Aquatic Mount Keybind Reminder"] = "游泳时按住 [KEY] 来召唤此坐骑。";
 
 L["Settings Repair Mount"] = "修理坐骑";
 L["Settings Repair Mount Tooltip"] = "选择在按住 Shift 键时要使用的商人或修理坐骑。当设置为随机时，每次都会从你的收藏中随机使用一个商人坐骑。";
@@ -156,6 +156,8 @@ L["Settings Click"] = "点击";
 L["Settings Random Section Title"] = "随机坐骑选择";
 L["Settings Random Ground Allow Flying"] = "允许'飞行坐骑'";
 L["Settings Random Ground Allow Flying Tooltip"] = "关闭此功能以限制随机地面坐骑仅使用非飞行坐骑。";
+L["Settings Summon Aquatic While Swimming"] = "游泳时召唤水栖坐骑";
+L["Settings Summon Aquatic While Swimming Tooltip"] = "启用后，游泳或潜水时默认召唤水栖坐骑。按住 [KEY] 可覆盖为尝试飞行坐骑。";
 L["Settings Clone Targeted Mount"] = "克隆目标坐骑";
 L["Settings Clone Targeted Mount Tooltip"] = "召唤随机坐骑时，若选中一名已骑乘的玩家，则会尝试召唤相同的坐骑（如果你拥有该坐骑）。";
 

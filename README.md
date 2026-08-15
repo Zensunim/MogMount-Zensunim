@@ -92,3 +92,7 @@ Simplified Chinese localization contributed by XingDVD.
 
 ### 1.6.1
 * Updated for WoW 12.1
+
+### 1.7
+* Fixed an issue where aquatic mounts weren't being summoned while swimming
+* Added aquatic mount override option
