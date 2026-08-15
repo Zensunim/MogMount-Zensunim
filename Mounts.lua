@@ -4,8 +4,10 @@
 -- Summon priority (MogCompanionsSummon):
 --   1. Exit vehicle (CanExitVehicle)
 --   2. Dismount if already mounted
---   3. [Ground modifier] + swimming → aquatic mount
---   4. [Repair modifier] → repair/vendor mount
+--   3. [Repair modifier] → repair/vendor mount
+--   4. Swimming/submerged:
+--        "Summon Aquatic while swimming" ON:  [Ground] → normal flying/ground mount; [Random] → random aquatic; else → aquatic mount
+--        "Summon Aquatic while swimming" OFF: [Ground] → aquatic mount; [Random] → random mount; else → normal flying/ground mount
 --   5. [Random modifier] → random mount
 --   6. Flyable area, no [Ground modifier] → flying mount
 --   7. Fallback → ground mount
@@ -545,8 +547,8 @@ end
 -- Summons the aquatic mount for this character.
 -- Falls back to a random aquatic mount when no default is saved (value <= 1).
 -- Aquatic mounts are matched by mountTypeID (231, 232, 254, 407, 436) in Shared.lua.
-function MogCompanionsSummonAquatic()
-	if MogCompanionsCharacterSaved.Default.Aquatic <= 1 then
+function MogCompanionsSummonAquatic(forceRandom)
+	if forceRandom or MogCompanionsCharacterSaved.Default.Aquatic <= 1 then
 		local randomMount = MogCompanions:getRandomMount("aquatic");
 		if randomMount then C_MountJournal.SummonByID(randomMount.id); end
 	else
@@ -718,13 +720,19 @@ function MogCompanionsSummon()
 	elseif IsSwimming() or IsSubmerged() then
 		if MogCompanionsSaved.SummonAquaticWhileSwimming then
 			if GetMountModKey("Ground") then
+				-- Ground escapes the aquatic default and tries flying/ground instead.
 				SummonNormalMount(true);
+			elseif GetMountModKey("Random") then
+				-- Random should still break out of the saved default aquatic mount, matching
+				-- MogCompanionsSummonRandom's behavior of ignoring per-outfit/default picks.
+				MogCompanionsSummonAquatic(true);
 			else
-				-- Covers both the default case and [Random modifier]: both resolve to aquatic
-				-- while this option is enabled, since Random is meant to break out of the
-				-- outfit's curated pool, not out of the water-appropriate category.
 				MogCompanionsSummonAquatic();
 			end
+		elseif GetMountModKey("Ground") then
+			-- Setting is off, but Ground is still the explicit "summon aquatic" action
+			-- (default aquatic mount if set, otherwise random aquatic).
+			MogCompanionsSummonAquatic();
 		elseif GetMountModKey("Random") then
 			-- Random mount from all collected usable mounts
 			MogCompanionsSummonRandom();
