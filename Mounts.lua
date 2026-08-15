@@ -481,6 +481,54 @@ RefreshMountSlots = function()
 	UpdateMountModeButtonHighlights(outfit, "GroundMountMode", GroundMountModeButtons);
 end
 
+-- Cache: spellID → mountID for all collected, usable mounts owned by this character.
+-- nil means the cache has not been built yet (or was invalidated).
+-- Rebuilt lazily on the next tryCloneTargetedMount call.
+local mountCloneCache = nil;
+
+local function buildMountCloneCache()
+	mountCloneCache = {};
+	local mountIDs = C_MountJournal.GetMountIDs();
+	for _, mountID in ipairs(mountIDs) do
+		local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected = C_MountJournal.GetMountInfoByID(mountID);
+		if isCollected and isUsable and not shouldHideOnChar and spellID then
+			mountCloneCache[spellID] = mountID;
+		end
+	end
+end
+
+-- Invalidate the cache when mount collection or usability changes.
+local MountCloneCacheFrame = CreateFrame("Frame");
+MountCloneCacheFrame:RegisterEvent("NEW_MOUNT_ADDED");
+MountCloneCacheFrame:RegisterEvent("MOUNT_JOURNAL_USABILITY_CHANGED");
+MountCloneCacheFrame:SetScript("OnEvent", function() mountCloneCache = nil; end);
+
+-- Returns the mount ID of the mount the target player is riding, if the local
+-- player also has that mount collected and usable. Returns nil otherwise.
+-- Used by MogCompanionsSummon when CloneTargetedMount is enabled.
+local function tryCloneTargetedMount()
+	if not MogCompanionsSaved.CloneTargetedMount then return nil; end
+	if not UnitExists("target") then return nil; end
+	if not UnitIsPlayer("target") then return nil; end
+
+	if not mountCloneCache then
+		buildMountCloneCache();
+	end
+
+	-- Scan the target's buffs (typically < 40) and do an O(1) cache lookup per entry.
+	local i = 1;
+	while true do
+		local aura = C_UnitAuras.GetAuraDataByIndex("target", i, "HELPFUL");
+		if not aura then break; end
+		if aura.spellId and mountCloneCache[aura.spellId] then
+			return mountCloneCache[aura.spellId];
+		end
+		i = i + 1;
+	end
+
+	return nil;
+end
+
 -- ── Mount Summon Functions ──────────────────────────────────────────────────────
 -- Flying/Ground: use a random valid per-outfit pool selection when available,
 -- otherwise fall back to the existing random category behavior.
@@ -547,7 +595,17 @@ end
 -- Summons the aquatic mount for this character.
 -- Falls back to a random aquatic mount when no default is saved (value <= 1).
 -- Aquatic mounts are matched by mountTypeID (231, 232, 254, 407, 436) in Shared.lua.
+-- forceRandom=true (Random modifier while swimming) skips the clone check entirely,
+-- matching MogCompanionsSummonRandom's "ignore clone/default, give me random" behavior.
 function MogCompanionsSummonAquatic(forceRandom)
+	if not forceRandom then
+		local cloneID = tryCloneTargetedMount();
+		if cloneID then
+			C_MountJournal.SummonByID(cloneID);
+			return;
+		end
+	end
+
 	if forceRandom or MogCompanionsCharacterSaved.Default.Aquatic <= 1 then
 		local randomMount = MogCompanions:getRandomMount("aquatic");
 		if randomMount then C_MountJournal.SummonByID(randomMount.id); end
@@ -612,54 +670,6 @@ function MogCompanionsSummonPassenger()
 	if mount then
 		C_MountJournal.SummonByID(mount.id);
 	end
-end
-
--- Cache: spellID → mountID for all collected, usable mounts owned by this character.
--- nil means the cache has not been built yet (or was invalidated).
--- Rebuilt lazily on the next tryCloneTargetedMount call.
-local mountCloneCache = nil;
-
-local function buildMountCloneCache()
-	mountCloneCache = {};
-	local mountIDs = C_MountJournal.GetMountIDs();
-	for _, mountID in ipairs(mountIDs) do
-		local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected = C_MountJournal.GetMountInfoByID(mountID);
-		if isCollected and isUsable and not shouldHideOnChar and spellID then
-			mountCloneCache[spellID] = mountID;
-		end
-	end
-end
-
--- Invalidate the cache when mount collection or usability changes.
-local MountCloneCacheFrame = CreateFrame("Frame");
-MountCloneCacheFrame:RegisterEvent("NEW_MOUNT_ADDED");
-MountCloneCacheFrame:RegisterEvent("MOUNT_JOURNAL_USABILITY_CHANGED");
-MountCloneCacheFrame:SetScript("OnEvent", function() mountCloneCache = nil; end);
-
--- Returns the mount ID of the mount the target player is riding, if the local
--- player also has that mount collected and usable. Returns nil otherwise.
--- Used by MogCompanionsSummon when CloneTargetedMount is enabled.
-local function tryCloneTargetedMount()
-	if not MogCompanionsSaved.CloneTargetedMount then return nil; end
-	if not UnitExists("target") then return nil; end
-	if not UnitIsPlayer("target") then return nil; end
-
-	if not mountCloneCache then
-		buildMountCloneCache();
-	end
-
-	-- Scan the target's buffs (typically < 40) and do an O(1) cache lookup per entry.
-	local i = 1;
-	while true do
-		local aura = C_UnitAuras.GetAuraDataByIndex("target", i, "HELPFUL");
-		if not aura then break; end
-		if aura.spellId and mountCloneCache[aura.spellId] then
-			return mountCloneCache[aura.spellId];
-		end
-		i = i + 1;
-	end
-
-	return nil;
 end
 
 -- Returns true if the modifier key configured for modType is currently held.
