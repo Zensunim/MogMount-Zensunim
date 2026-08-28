@@ -62,23 +62,23 @@ local passengerMountInfo = {
 	[959]  = { capacity = 2, mode = "flying" }, -- Stormwind Skychaser
 	[960]  = { capacity = 2, mode = "flying" }, -- Orgrimmar Interceptor
 	[1287] = { capacity = 2, mode = "flying" }, -- Explorer's Jungle Hopper
-	[1563] = { capacity = 2, mode = "flying" }, -- Highland Drake
-	[1588] = { capacity = 2, mode = "flying" }, -- Winding Slitherdrake
-	[1589] = { capacity = 2, mode = "flying" }, -- Renewed Proto-Drake
-	[1590] = { capacity = 2, mode = "flying" }, -- Windborne Velocidrake
-	[1591] = { capacity = 2, mode = "flying" }, -- Cliffside Wylderdrake
+	[1563] = { capacity = 2, mode = "flying", rideAlong = true }, -- Highland Drake
+	[1588] = { capacity = 2, mode = "flying", rideAlong = true }, -- Winding Slitherdrake
+	[1589] = { capacity = 2, mode = "flying", rideAlong = true }, -- Renewed Proto-Drake
+	[1590] = { capacity = 2, mode = "flying", rideAlong = true }, -- Windborne Velocidrake
+	[1591] = { capacity = 2, mode = "flying", rideAlong = true }, -- Cliffside Wylderdrake
 	[1698] = { capacity = 2, mode = "flying" }, -- Rocket Shredder 9001
-	[1744] = { capacity = 2, mode = "flying" }, -- Grotto Netherwing Drake
-	[1792] = { capacity = 2, mode = "flying" }, -- Algarian Stormrider
-	[1795] = { capacity = 2, mode = "flying" }, -- Auspicious Arborwyrm
-	[1818] = { capacity = 2, mode = "flying" }, -- Anu'relos, Flame's Guidance
-	[1830] = { capacity = 2, mode = "flying" }, -- Flourishing Whimsydrake
-	[2090] = { capacity = 2, mode = "flying" }, -- Polly Roger
-	[2091] = { capacity = 2, mode = "flying" }, -- Voyaging Wilderling
-	[2144] = { capacity = 2, mode = "flying" }, -- Delver's Dirigible
-	[2296] = { capacity = 2, mode = "flying" }, -- Delver's Gob-Trotter
-	[2324] = { capacity = 2, mode = "flying" }, -- Hooktalon
-	[2512] = { capacity = 2, mode = "flying" }, -- Delver's Mana-Skimmer
+	[1744] = { capacity = 2, mode = "flying", rideAlong = true }, -- Grotto Netherwing Drake
+	[1792] = { capacity = 2, mode = "flying", rideAlong = true }, -- Algarian Stormrider
+	[1795] = { capacity = 2, mode = "flying", rideAlong = true }, -- Auspicious Arborwyrm
+	[1818] = { capacity = 2, mode = "flying", rideAlong = true }, -- Anu'relos, Flame's Guidance
+	[1830] = { capacity = 2, mode = "flying", rideAlong = true }, -- Flourishing Whimsydrake
+	[2090] = { capacity = 2, mode = "flying", rideAlong = true }, -- Polly Roger
+	[2091] = { capacity = 2, mode = "flying", rideAlong = true }, -- Voyaging Wilderling
+	[2144] = { capacity = 2, mode = "flying", rideAlong = true }, -- Delver's Dirigible
+	[2296] = { capacity = 2, mode = "flying", rideAlong = true }, -- Delver's Gob-Trotter
+	[2324] = { capacity = 2, mode = "flying", rideAlong = true }, -- Hooktalon
+	[2512] = { capacity = 2, mode = "flying", rideAlong = true }, -- Delver's Mana-Skimmer
 	[240]  = { capacity = 2, mode = "ground" }, -- Mechano-Hog
 	[275]  = { capacity = 2, mode = "ground" }, -- Mekgineer's Chopper
 	[1288] = { capacity = 2, mode = "ground" }, -- Explorer's Dunetrekker
@@ -656,11 +656,14 @@ function MogCompanions:getSortedPassengerMounts(category)
 	local mountsRaw = MogCompanions:sortMounts(MogCompanions:GetCollectedMounts());
 	local mounts = {};
 	local includeVendorMounts = MogCompanionsSaved.RandomIncludeVendorPassengerMounts;
+	local rideAlongEnabled = C_SpellBook.IsSpellKnown(447959);
 
 	for i = 1, #mountsRaw do
 		local mount = mountsRaw[i];
 		local info = GetPassengerMountInfo(mount.id);
-		local isAllowed = info ~= nil and (includeVendorMounts or not info.utility);
+		local isAllowed = info ~= nil
+			and (includeVendorMounts or not info.utility)
+			and (not info.rideAlong or rideAlongEnabled);
 		local matchesCategory = category == nil
 			or (info ~= nil and info.mode == category)
 			or (category == "ground"
