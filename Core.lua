@@ -808,6 +808,10 @@ function MogCompanions:OnEvent(event, addOnName)
 				MogCompanionsSaved.SummonAquaticWhileSwimming = true;
 			end
 
+			if MogCompanionsSaved.RandomPassengerMatchGroupSize == nil then
+				MogCompanionsSaved.RandomPassengerMatchGroupSize = true;
+			end
+
 			if MogCompanionsSaved.CloneTargetedMount == nil then
 				MogCompanionsSaved.CloneTargetedMount = false;
 			end

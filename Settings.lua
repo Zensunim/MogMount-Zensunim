@@ -325,6 +325,19 @@ local function InitSettings()
 	Settings.CreateCheckbox(category, setting, tooltip);
 	setting:SetValueChangedCallback(OnSettingChanged);
 
+	-- Random passenger: prefer mounts that fit the current group size
+
+	local variable = CreateSettingIdentifier("RandomPassengerMatchGroupSize");
+	local defaultValue = true;
+	local name = L["Settings Random Passenger Match Group Size"];
+	local tooltip = L["Settings Random Passenger Match Group Size Tooltip"];
+	local variableKey = "RandomPassengerMatchGroupSize";
+	local variableTable = MogCompanionsSaved;
+
+	local setting = Settings.RegisterAddOnSetting(category, variable, variableKey, variableTable, type(defaultValue), name, defaultValue);
+	Settings.CreateCheckbox(category, setting, tooltip);
+	setting:SetValueChangedCallback(OnSettingChanged);
+
 	-- Clone targeted mount
 
 	local variable = CreateSettingIdentifier("CloneTargetedMount");

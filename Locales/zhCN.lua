@@ -158,6 +158,10 @@ L["Settings Random Ground Allow Flying"] = "允许'飞行坐骑'";
 L["Settings Random Ground Allow Flying Tooltip"] = "关闭此功能以限制随机地面坐骑仅使用非飞行坐骑。";
 L["Settings Summon Aquatic While Swimming"] = "游泳时召唤水栖坐骑";
 L["Settings Summon Aquatic While Swimming Tooltip"] = "启用后，游泳或潜水时默认召唤水栖坐骑。按住 [KEY] 可覆盖为尝试飞行坐骑。";
+L["Settings Random Include Vendor Passenger Mounts"] = "包括带商人的乘客坐骑";
+L["Settings Random Include Vendor Passenger Mounts Tooltip"] = "召唤随机乘客坐骑时，包括乘客座位通常由功能性 NPC 占用的坐骑，例如提供商人、修理、幻化、拍卖行或邮箱服务的 NPC。";
+L["Settings Random Passenger Match Group Size"] = "优先选择适合队伍人数的乘客坐骑";
+L["Settings Random Passenger Match Group Size Tooltip"] = "组队时召唤随机乘客坐骑，优先选择座位最少且能容纳全队的坐骑。如果没有坐骑能容纳全队，则优先选择座位最多的坐骑。\n\n在可飞行区域，飞行坐骑的优先级仍高于队伍人数。";
 L["Settings Clone Targeted Mount"] = "克隆目标坐骑";
 L["Settings Clone Targeted Mount Tooltip"] = "召唤随机坐骑时，若选中一名已骑乘的玩家，则会尝试召唤相同的坐骑（如果你拥有该坐骑）。";
 

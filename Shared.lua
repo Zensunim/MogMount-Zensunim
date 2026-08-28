@@ -52,60 +52,49 @@ local slowGroundMountIDs = {
 	[2823] = true, -- Savage Crimson Battle Turtle
 };
 
--- Mount IDs of passenger-capable flying mounts (both players can fly together).
--- Update when Blizzard adds new multi-seat flying mounts.
-local passengerFlyingMountIDs = {
-	[382]  = true, -- X-53 Touring Rocket
-	[407]  = true, -- Sandstone Drake
-	[455]  = true, -- Obsidian Nightwing
-	[959]  = true, -- Stormwind Skychaser
-	[960]  = true, -- Orgrimmar Interceptor
-	[1563] = true, -- Highland Drake
-	[1588] = true, -- Winding Slitherdrake
-	[1589] = true, -- Renewed Proto-Drake
-	[1590] = true, -- Windborne Velocidrake
-	[1591] = true, -- Cliffside Wylderdrake
-	[1744] = true, -- Grotto Netherwing Drake
-	[1792] = true, -- Algarian Stormrider
-	[1795] = true, -- Auspicious Arborwyrm
-	[1818] = true, -- Anu'relos, Flame's Guidance
-	[1830] = true, -- Flourishing Whimsydrake
-	[2090] = true, -- Polly Roger
-	[2091] = true, -- Voyaging Wilderling
-	[2144] = true, -- Delver's Dirigible
-	[2296] = true, -- Delver's Gob-Trotter
-	[2512] = true, -- Delver's Mana-Skimmer
+-- Canonical passenger mount metadata used by every random passenger summon path.
+-- capacity includes the driver; utility marks mounts whose extra seats are usually
+-- occupied by service NPCs and are therefore opt-in for surprise summons.
+local passengerMountInfo = {
+	[382]  = { capacity = 2, mode = "flying" }, -- X-53 Touring Rocket
+	[407]  = { capacity = 2, mode = "flying" }, -- Sandstone Drake
+	[455]  = { capacity = 2, mode = "flying" }, -- Obsidian Nightwing
+	[959]  = { capacity = 2, mode = "flying" }, -- Stormwind Skychaser
+	[960]  = { capacity = 2, mode = "flying" }, -- Orgrimmar Interceptor
+	[1287] = { capacity = 2, mode = "flying" }, -- Explorer's Jungle Hopper
+	[1563] = { capacity = 2, mode = "flying" }, -- Highland Drake
+	[1588] = { capacity = 2, mode = "flying" }, -- Winding Slitherdrake
+	[1589] = { capacity = 2, mode = "flying" }, -- Renewed Proto-Drake
+	[1590] = { capacity = 2, mode = "flying" }, -- Windborne Velocidrake
+	[1591] = { capacity = 2, mode = "flying" }, -- Cliffside Wylderdrake
+	[1698] = { capacity = 2, mode = "flying" }, -- Rocket Shredder 9001
+	[1744] = { capacity = 2, mode = "flying" }, -- Grotto Netherwing Drake
+	[1792] = { capacity = 2, mode = "flying" }, -- Algarian Stormrider
+	[1795] = { capacity = 2, mode = "flying" }, -- Auspicious Arborwyrm
+	[1818] = { capacity = 2, mode = "flying" }, -- Anu'relos, Flame's Guidance
+	[1830] = { capacity = 2, mode = "flying" }, -- Flourishing Whimsydrake
+	[2090] = { capacity = 2, mode = "flying" }, -- Polly Roger
+	[2091] = { capacity = 2, mode = "flying" }, -- Voyaging Wilderling
+	[2144] = { capacity = 2, mode = "flying" }, -- Delver's Dirigible
+	[2296] = { capacity = 2, mode = "flying" }, -- Delver's Gob-Trotter
+	[2324] = { capacity = 2, mode = "flying" }, -- Hooktalon
+	[2512] = { capacity = 2, mode = "flying" }, -- Delver's Mana-Skimmer
+	[240]  = { capacity = 2, mode = "ground" }, -- Mechano-Hog
+	[275]  = { capacity = 2, mode = "ground" }, -- Mekgineer's Chopper
+	[1288] = { capacity = 2, mode = "ground" }, -- Explorer's Dunetrekker
+	[280]  = { capacity = 3, mode = "ground", utility = true }, -- Traveler's Tundra Mammoth
+	[284]  = { capacity = 3, mode = "ground", utility = true }, -- Traveler's Tundra Mammoth
+	[286]  = { capacity = 3, mode = "ground" }, -- Grand Black War Mammoth
+	[287]  = { capacity = 3, mode = "ground" }, -- Grand Black War Mammoth
+	[288]  = { capacity = 3, mode = "ground" }, -- Grand Ice Mammoth
+	[289]  = { capacity = 3, mode = "ground" }, -- Grand Ice Mammoth
+	[460]  = { capacity = 3, mode = "ground", utility = true }, -- Grand Expedition Yak
+	[1039] = { capacity = 3, mode = "ground", utility = true }, -- Mighty Caravan Brutosaur
+	[2982] = { capacity = 3, mode = "ground", utility = true }, -- Hearthkeeper's Wandering Caravan
 };
 
--- Mount IDs of passenger-capable ground mounts (vendor mammoth, chopper, etc.).
--- Update when Blizzard adds new multi-seat ground mounts.
-local passengerGroundMountIDs = {
-	[240]    = true, -- Mechano-Hog
-	[275]    = true, -- Mekgineer's Chopper
-	[280]    = true, -- Traveler's Tundra Mammoth
-	[284]    = true, -- Traveler's Tundra Mammoth
-	[286]    = true, -- Grand Black War Mammoth
-	[287]    = true, -- Grand Black War Mammoth
-	[288]    = true, -- Grand Ice Mammoth
-	[289]    = true, -- Grand Ice Mammoth
-	[460]    = true, -- Grand Expedition Yak
-	[1039]   = true, -- Mighty Caravan Brutosaur
-	[2237]   = true, -- Grizzly Hills Packmaster ("Storebought LongBoi")
-	[2982]   = true, -- Hearthkeeper's Wandering Caravan (vendor passenger)
-};
-
--- Passenger-capable ground mounts that also carry a vendor NPC in a passenger seat
--- ("LongBoi", "Storebought LongBoi", Yak, WOTLK Mammoth). Excluded from random
--- passenger selection by default so a vendor doesn't unexpectedly ride along;
--- players can opt in via MogCompanionsSaved.RandomIncludeVendorPassengerMounts.
-local vendorPassengerMountIDs = {
-	[280]    = true, -- Traveler's Tundra Mammoth
-	[284]    = true, -- Traveler's Tundra Mammoth
-	[460]    = true, -- Grand Expedition Yak
-	[1039]   = true, -- Mighty Caravan Brutosaur
-	[2237]   = true, -- Grizzly Hills Packmaster
-	[2982]   = true, -- Hearthkeeper's Wandering Caravan
-};
+-- The Hivemind is intentionally excluded because its passenger eligibility depends
+-- on ritual attunement state the addon cannot query.
 
 local function IsAquaticMountType(mountTypeID)
 	return mountTypeID ~= nil and aquaticMountTypeIDs[mountTypeID] == true;
@@ -119,20 +108,27 @@ local function IsSlowGroundMount(mountID)
 	return mountID ~= nil and slowGroundMountIDs[mountID] == true;
 end
 
+local function GetPassengerMountInfo(mountID)
+	return mountID ~= nil and passengerMountInfo[mountID] or nil;
+end
+
 local function IsPassengerFlyingMount(mountID)
-	return mountID ~= nil and passengerFlyingMountIDs[mountID] == true;
+	local info = GetPassengerMountInfo(mountID);
+	return info ~= nil and info.mode == "flying";
 end
 
 local function IsPassengerGroundMount(mountID)
-	return mountID ~= nil and passengerGroundMountIDs[mountID] == true;
+	local info = GetPassengerMountInfo(mountID);
+	return info ~= nil and info.mode == "ground";
 end
 
 local function IsPassengerMount(mountID)
-	return IsPassengerFlyingMount(mountID) or IsPassengerGroundMount(mountID);
+	return GetPassengerMountInfo(mountID) ~= nil;
 end
 
 local function IsVendorPassengerMount(mountID)
-	return mountID ~= nil and vendorPassengerMountIDs[mountID] == true;
+	local info = GetPassengerMountInfo(mountID);
+	return info ~= nil and info.utility == true;
 end
 
 local function addUniquePoolValue(pool, value)
@@ -669,11 +665,10 @@ end
 
 -- Returns collected passenger-capable mounts the character owns.
 -- category: "flying" = flying passenger mounts only; "ground" = ground passenger mounts only;
--- nil = all passenger mounts. Uses the mountID field stored in sortMounts() to match against
--- the hardcoded passenger mount ID tables. No search filter is applied so the pool is always
--- the full category regardless of any open UI search.
--- Vendor passenger mounts are excluded unless MogCompanionsSaved.RandomIncludeVendorPassengerMounts 
--- is true, since a vendor NPC riding along is usually not what the player wants from a surprise random summon.
+-- nil = all passenger mounts. No search filter is applied so the pool is always the
+-- full category regardless of any open UI search.
+-- Utility mounts stay opt-in via MogCompanionsSaved.RandomIncludeVendorPassengerMounts so
+-- service NPC riders do not surprise the player during a random summon.
 function MogCompanions:getSortedPassengerMounts(category)
 	local mountsRaw = MogCompanions:sortMounts(MogCompanions:GetCollectedMounts());
 	local mounts = {};
@@ -681,22 +676,66 @@ function MogCompanions:getSortedPassengerMounts(category)
 
 	for i = 1, #mountsRaw do
 		local mount = mountsRaw[i];
-		local isFlying = IsPassengerFlyingMount(mount.id);
-		local isGround = IsPassengerGroundMount(mount.id);
-		local isAllowed = includeVendorMounts or not IsVendorPassengerMount(mount.id);
+		local info = GetPassengerMountInfo(mount.id);
+		local isAllowed = info ~= nil and (includeVendorMounts or not info.utility);
 
 		if isAllowed then
-			if category == "flying" then
-				if isFlying then table.insert(mounts, mount); end
-			elseif category == "ground" then
-				if isGround then table.insert(mounts, mount); end
-			else
-				if isFlying or isGround then table.insert(mounts, mount); end
+			if category == nil or info.mode == category then
+				table.insert(mounts, mount);
 			end
 		end
 	end
 
 	return mounts;
+end
+
+-- Passenger random selection ranks only within the movement category already chosen.
+-- When group-size matching is enabled, the helper first prefers the smallest seat
+-- count that fits the full group, then falls back to the largest available capacity.
+local function getRandomPassengerMount(category)
+	local mounts = MogCompanions:getSortedPassengerMounts(category);
+	if #mounts == 0 then
+		return nil;
+	end
+
+	local groupSize = GetNumGroupMembers();
+	if not MogCompanionsSaved.RandomPassengerMatchGroupSize or groupSize < 2 then
+		return mounts[math.random(1, #mounts)];
+	end
+
+	local capacityBuckets = {};
+	local chosenCapacity = nil;
+	local largestCapacity = nil;
+
+	for i = 1, #mounts do
+		local info = GetPassengerMountInfo(mounts[i].id);
+		if info ~= nil then
+			local capacity = info.capacity;
+			if capacityBuckets[capacity] == nil then
+				capacityBuckets[capacity] = {};
+			end
+			table.insert(capacityBuckets[capacity], mounts[i]);
+
+			if largestCapacity == nil or capacity > largestCapacity then
+				largestCapacity = capacity;
+			end
+
+			if capacity >= groupSize and (chosenCapacity == nil or capacity < chosenCapacity) then
+				chosenCapacity = capacity;
+			end
+		end
+	end
+
+	if chosenCapacity == nil then
+		chosenCapacity = largestCapacity;
+	end
+
+	local eligibleMounts = capacityBuckets[chosenCapacity];
+	if eligibleMounts == nil or #eligibleMounts == 0 then
+		return mounts[math.random(1, #mounts)];
+	end
+
+	return eligibleMounts[math.random(1, #eligibleMounts)];
 end
 
 -- Builds the pool of ground mounts used by random ground selection.
@@ -982,6 +1021,7 @@ end
 -- is always the full category, not whatever the player last typed in the search box.
 function MogCompanions:getRandomMount(type)
 	local mounts = {}
+	local selectedMount = nil;
 
 	local savedSearch = MogCompanions.MountSearchString;
 	MogCompanions.MountSearchString = "";
@@ -997,14 +1037,18 @@ function MogCompanions:getRandomMount(type)
 	elseif type == "random" then
 		mounts = MogCompanions:getSortedRandomMounts();
 	elseif type == "passenger_flying" then
-		mounts = MogCompanions:getSortedPassengerMounts("flying");
+		selectedMount = getRandomPassengerMount("flying");
 	elseif type == "passenger_ground" then
-		mounts = MogCompanions:getSortedPassengerMounts("ground");
+		selectedMount = getRandomPassengerMount("ground");
 	else
 		mounts = MogCompanions:getSortedFlyingMounts();
 	end
 
 	MogCompanions.MountSearchString = savedSearch;
+
+	if selectedMount ~= nil then
+		return selectedMount;
+	end
 
 	if #mounts == 0 then
 		return nil;

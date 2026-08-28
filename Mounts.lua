@@ -510,6 +510,7 @@ local function tryCloneTargetedMount()
 	if not MogCompanionsSaved.CloneTargetedMount then return nil; end
 	if not UnitExists("target") then return nil; end
 	if not UnitIsPlayer("target") then return nil; end
+	if C_Secrets.ShouldAurasBeSecret() then return nil; end
 
 	if not mountCloneCache then
 		buildMountCloneCache();

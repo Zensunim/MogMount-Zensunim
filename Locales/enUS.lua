@@ -159,7 +159,9 @@ L["Settings Random Ground Allow Flying Tooltip"] = "Turn this feature off to res
 L["Settings Summon Aquatic While Swimming"] = "Summon Aquatic while swimming";
 L["Settings Summon Aquatic While Swimming Tooltip"] = "When enabled, swimming/submerged summons aquatic by default. Hold [KEY] to override and try a flying mount instead.";
 L["Settings Random Include Vendor Passenger Mounts"] = "Include vendor passenger mounts";
-L["Settings Random Include Vendor Passenger Mounts Tooltip"] = "When summoning a random passenger mount, include mounts with a vendor NPC riding in the passenger seat, like the Grand Expedition Yak or Traveler's Tundra Mammoth.";
+L["Settings Random Include Vendor Passenger Mounts Tooltip"] = "When summoning a random passenger mount, include mounts whose passenger seats are normally occupied by service NPCs, such as vendors, repairers, transmogrifiers, auctioneers, or mail carriers.";
+L["Settings Random Passenger Match Group Size"] = "Prefer passenger mounts that fit your group";
+L["Settings Random Passenger Match Group Size Tooltip"] = "When summoning a random passenger mount while grouped, prefer the mount with the fewest seats that can carry your entire group. If none can, prefer the mount with the most seats.\n\nFlying mounts still take priority over group size in flyable areas.";
 L["Settings Clone Targeted Mount"] = "Clone targeted mount";
 L["Settings Clone Targeted Mount Tooltip"] = "When summoning a random mount, target a mounted player to summon the same mount, if you own it.";
 
