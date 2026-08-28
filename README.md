@@ -100,4 +100,5 @@ Simplified Chinese localization contributed by XingDVD.
 ### 1.8
 * Added "Hearthkeeper's Wandering Caravan" to the repair/vendor mount list
 * Added setting to account for group size when selecting a random passenger mount
+* Ground passenger randomization now includes flying passenger mounts when the setting is enabled
 * Fixed taint issues with mount cloning in areas when detection is locked down

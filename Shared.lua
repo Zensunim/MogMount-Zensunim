@@ -90,6 +90,7 @@ local passengerMountInfo = {
 	[289]  = { capacity = 3, mode = "ground" }, -- Grand Ice Mammoth
 	[460]  = { capacity = 3, mode = "ground", utility = true }, -- Grand Expedition Yak
 	[1039] = { capacity = 3, mode = "ground", utility = true }, -- Mighty Caravan Brutosaur
+	[2265] = { capacity = 3, mode = "ground", utility = true }, -- Trader's Gilded Brutosaur
 	[2982] = { capacity = 3, mode = "ground", utility = true }, -- Hearthkeeper's Wandering Caravan
 };
 
@@ -110,25 +111,6 @@ end
 
 local function GetPassengerMountInfo(mountID)
 	return mountID ~= nil and passengerMountInfo[mountID] or nil;
-end
-
-local function IsPassengerFlyingMount(mountID)
-	local info = GetPassengerMountInfo(mountID);
-	return info ~= nil and info.mode == "flying";
-end
-
-local function IsPassengerGroundMount(mountID)
-	local info = GetPassengerMountInfo(mountID);
-	return info ~= nil and info.mode == "ground";
-end
-
-local function IsPassengerMount(mountID)
-	return GetPassengerMountInfo(mountID) ~= nil;
-end
-
-local function IsVendorPassengerMount(mountID)
-	local info = GetPassengerMountInfo(mountID);
-	return info ~= nil and info.utility == true;
 end
 
 local function addUniquePoolValue(pool, value)
@@ -664,9 +646,10 @@ function MogCompanions:getSortedRandomMounts()
 end
 
 -- Returns collected passenger-capable mounts the character owns.
--- category: "flying" = flying passenger mounts only; "ground" = ground passenger mounts only;
--- nil = all passenger mounts. No search filter is applied so the pool is always the
--- full category regardless of any open UI search.
+-- category: "flying" = flying passenger mounts only; "ground" = ground passenger mounts
+-- plus flying passenger mounts when MogCompanionsSaved.RandomGroundAllowFlying is enabled;
+-- nil = all passenger mounts. No search filter is applied so the pool is always the full
+-- category regardless of any open UI search.
 -- Utility mounts stay opt-in via MogCompanionsSaved.RandomIncludeVendorPassengerMounts so
 -- service NPC riders do not surprise the player during a random summon.
 function MogCompanions:getSortedPassengerMounts(category)
@@ -678,11 +661,15 @@ function MogCompanions:getSortedPassengerMounts(category)
 		local mount = mountsRaw[i];
 		local info = GetPassengerMountInfo(mount.id);
 		local isAllowed = info ~= nil and (includeVendorMounts or not info.utility);
+		local matchesCategory = category == nil
+			or (info ~= nil and info.mode == category)
+			or (category == "ground"
+				and info ~= nil
+				and info.mode == "flying"
+				and MogCompanionsSaved.RandomGroundAllowFlying);
 
-		if isAllowed then
-			if category == nil or info.mode == category then
-				table.insert(mounts, mount);
-			end
+		if isAllowed and matchesCategory then
+			table.insert(mounts, mount);
 		end
 	end
 
