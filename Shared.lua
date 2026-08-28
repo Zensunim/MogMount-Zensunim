@@ -29,13 +29,14 @@ local aquaticMountTypeIDs = {
 -- Mount IDs of repair/vendor/utility mounts.
 -- Update when Blizzard adds new vendor mounts.
 local repairMountIDs = {
-	[273]  = true, -- Grand Caravan Mammoth (Alliance)
-	[274]  = true, -- Grand Caravan Mammoth (Horde)
-	[280]  = true, -- Traveler's Tundra Mammoth (Alliance)
-	[284]  = true, -- Traveler's Tundra Mammoth (Horde)
-	[460]  = true, -- Grand Expedition Yak
-	[1039] = true, -- Mighty Caravan Brutosaur
-	[2237] = true, -- Grizzly Hills Packmaster
+	[273]    = true, -- Grand Caravan Mammoth (Alliance)
+	[274]    = true, -- Grand Caravan Mammoth (Horde)
+	[280]    = true, -- Traveler's Tundra Mammoth (Alliance)
+	[284]    = true, -- Traveler's Tundra Mammoth (Horde)
+	[460]    = true, -- Grand Expedition Yak
+	[1039]   = true, -- Mighty Caravan Brutosaur
+	[2237]   = true, -- Grizzly Hills Packmaster
+	[2982]   = true, -- Hearthkeeper's Wandering Caravan
 };
 
 -- Mount IDs of unusually slow ground mounts (60% run speed) that are jarring when
@@ -79,17 +80,18 @@ local passengerFlyingMountIDs = {
 -- Mount IDs of passenger-capable ground mounts (vendor mammoth, chopper, etc.).
 -- Update when Blizzard adds new multi-seat ground mounts.
 local passengerGroundMountIDs = {
-	[240]  = true, -- Mechano-Hog
-	[275]  = true, -- Mekgineer's Chopper
-	[280]  = true, -- Traveler's Tundra Mammoth
-	[284]  = true, -- Traveler's Tundra Mammoth
-	[286]  = true, -- Grand Black War Mammoth
-	[287]  = true, -- Grand Black War Mammoth
-	[288]  = true, -- Grand Ice Mammoth
-	[289]  = true, -- Grand Ice Mammoth
-	[460]  = true, -- Grand Expedition Yak
-	[1039] = true, -- Mighty Caravan Brutosaur
-	[2237] = true, -- Grizzly Hills Packmaster ("Storebought LongBoi")
+	[240]    = true, -- Mechano-Hog
+	[275]    = true, -- Mekgineer's Chopper
+	[280]    = true, -- Traveler's Tundra Mammoth
+	[284]    = true, -- Traveler's Tundra Mammoth
+	[286]    = true, -- Grand Black War Mammoth
+	[287]    = true, -- Grand Black War Mammoth
+	[288]    = true, -- Grand Ice Mammoth
+	[289]    = true, -- Grand Ice Mammoth
+	[460]    = true, -- Grand Expedition Yak
+	[1039]   = true, -- Mighty Caravan Brutosaur
+	[2237]   = true, -- Grizzly Hills Packmaster ("Storebought LongBoi")
+	[2982]   = true, -- Hearthkeeper's Wandering Caravan (vendor passenger)
 };
 
 -- Passenger-capable ground mounts that also carry a vendor NPC in a passenger seat
@@ -97,11 +99,12 @@ local passengerGroundMountIDs = {
 -- passenger selection by default so a vendor doesn't unexpectedly ride along;
 -- players can opt in via MogCompanionsSaved.RandomIncludeVendorPassengerMounts.
 local vendorPassengerMountIDs = {
-	[280]  = true, -- Traveler's Tundra Mammoth
-	[284]  = true, -- Traveler's Tundra Mammoth
-	[460]  = true, -- Grand Expedition Yak
-	[1039] = true, -- Mighty Caravan Brutosaur
-	[2237] = true, -- Grizzly Hills Packmaster
+	[280]    = true, -- Traveler's Tundra Mammoth
+	[284]    = true, -- Traveler's Tundra Mammoth
+	[460]    = true, -- Grand Expedition Yak
+	[1039]   = true, -- Mighty Caravan Brutosaur
+	[2237]   = true, -- Grizzly Hills Packmaster
+	[2982]   = true, -- Hearthkeeper's Wandering Caravan
 };
 
 local function IsAquaticMountType(mountTypeID)

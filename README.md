@@ -96,3 +96,6 @@ Simplified Chinese localization contributed by XingDVD.
 ### 1.7
 * Fixed an issue where aquatic mounts weren't being summoned while swimming
 * Added aquatic mount override option
+
+### 1.7.1
+* Added "Hearthkeeper's Wandering Caravan" to the repair/vendor mount list
